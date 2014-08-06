@@ -48,6 +48,9 @@ public class Repository
     @XStreamAlias("proxy-configuration")
     private ProxyConfiguration proxyConfiguration;
 
+    @XStreamAlias("remote-repository")
+    private RemoteRepository remoteRepository;
+
     @XStreamOmitField
     private Storage storage;
 
@@ -179,6 +182,16 @@ public class Repository
     public boolean acceptsReleases()
     {
         return RepositoryPolicyEnum.RELEASE.toString().equals(getPolicy());
+    }
+
+    public RemoteRepository getRemoteRepository()
+    {
+        return remoteRepository;
+    }
+
+    public void setRemoteRepository(RemoteRepository remoteRepository)
+    {
+        this.remoteRepository = remoteRepository;
     }
 
     public Storage getStorage()

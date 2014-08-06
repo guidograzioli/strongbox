@@ -7,25 +7,26 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 /**
  * @author mtodorov
  */
+@XStreamAlias("remote-repository")
 public class RemoteRepository
 {
 
     @XStreamAlias(value = "url")
     private String url;
 
-    @XStreamAlias(value = "downloadRemoteIndexes")
+    @XStreamAlias(value = "download-remote-indexes")
     private boolean downloadRemoteIndexes;
 
-    @XStreamAlias(value = "autoBlocking")
+    @XStreamAlias(value = "auto-blocking")
     private boolean autoBlocking;
 
-    @XStreamAlias(value = "checksumValidation")
+    @XStreamAlias(value = "checksum-validation")
     private boolean checksumValidation;
 
     @XStreamAlias(value = "credentials")
     private Credentials credentials;
 
-    @XStreamAlias(value = "checksumPolicy")
+    @XStreamAlias(value = "checksum-policy")
     private String checksumPolicy;
 
 
