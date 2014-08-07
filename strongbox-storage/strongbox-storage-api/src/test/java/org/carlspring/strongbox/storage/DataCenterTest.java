@@ -1,12 +1,13 @@
 package org.carlspring.strongbox.storage;
 
 import org.carlspring.strongbox.storage.repository.Repository;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import org.junit.Before;
+import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
@@ -16,10 +17,68 @@ import static junit.framework.Assert.assertNotNull;
 public class DataCenterTest
 {
 
-    public static final String TEST_CLASSES_DIR = new File("target/test-classes").getAbsolutePath();
-    public static final String TEST_REPOSITORIES_DIR = TEST_CLASSES_DIR + "/repositories";
-    public static final String TEST_STORAGES_DIR = TEST_CLASSES_DIR + "/storages";
+    public static final String TEST_CLASSES_DIR = new File("target").getAbsolutePath();
 
+    public static final String TEST_REPOSITORIES_DIR = TEST_CLASSES_DIR + "/test-repositories";
+
+    public static final String TEST_STORAGES_DIR = TEST_CLASSES_DIR + "/test-storages";
+
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Before
+    public void setUp()
+            throws Exception
+    {
+        final File repositoriesDir = new File(TEST_REPOSITORIES_DIR);
+        if (!repositoriesDir.exists())
+        {
+            repositoriesDir.mkdirs();
+
+            createRepository(TEST_REPOSITORIES_DIR, "repository0");
+            createRepository(TEST_REPOSITORIES_DIR, "repository1");
+            createRepository(TEST_REPOSITORIES_DIR, "repository2");
+        }
+
+        final File storagesDir = new File(TEST_STORAGES_DIR);
+        if (!storagesDir.exists())
+        {
+            storagesDir.mkdirs();
+
+            createStorageWithRepositories(storagesDir.getAbsolutePath(), "storage0", new String[]{ "int-releases",
+                                                                                                   "int-snapshots",
+                                                                                                   "qa-snapshots" });
+
+            createStorageWithRepositories(storagesDir.getAbsolutePath(), "storage1", new String[]{ "int-releases",
+                                                                                                   "int-releases-bkp",
+                                                                                                   "int-snapshots-bkp",
+                                                                                                   "qa-snapshots-bkp" });
+
+            createStorageWithRepositories(storagesDir.getAbsolutePath(), "storage2", new String[]{ "int-releases-obsolete",
+                                                                                                   "int-snapshots-obsolete" });
+        }
+    }
+
+    private void createStorageWithRepositories(String basedir,
+                                               String storageId,
+                                               String[] repositoryIds)
+    {
+        File storage = new File(basedir, storageId);
+        //noinspection ResultOfMethodCallIgnored
+        storage.mkdirs();
+
+        for (String repositoryId : repositoryIds)
+        {
+            createRepository(storage.getAbsolutePath(), repositoryId);
+        }
+    }
+
+    private void createRepository(String basedir,
+                                  String repositoryId)
+    {
+        File repository = new File(basedir, repositoryId);
+        //noinspection ResultOfMethodCallIgnored
+        repository.mkdirs();
+    }
 
     @Test
     public void testAddAnonymous()
@@ -80,7 +139,8 @@ public class DataCenterTest
 
         Set<Repository> repositories = new LinkedHashSet<Repository>();
         repositories.add(new Repository(new File(TEST_REPOSITORIES_DIR, "repository0").getCanonicalFile().getName()));
-        repositories.add(new Repository(new File(TEST_REPOSITORIES_DIR, "repository1").getCanonicalFile().getName(), true));
+        repositories.add(new Repository(new File(TEST_REPOSITORIES_DIR, "repository1").getCanonicalFile().getName(),
+                                        true));
         repositories.add(new Repository(new File(TEST_REPOSITORIES_DIR, "repository2").getCanonicalFile().getName()));
 
         dataCenter.addRepositories(TEST_REPOSITORIES_DIR, repositories);
@@ -95,7 +155,7 @@ public class DataCenterTest
             storageKey = storageKey.indexOf(File.separatorChar) != -1 ?
                          storageKey.substring(storageKey.lastIndexOf(File.separatorChar) + 1, storageKey.length()) :
                          storageKey;
-            System.out.println(storageKey +": " + storage.getBasedir());
+            System.out.println(storageKey + ": " + storage.getBasedir());
 
             for (String key : storage.getRepositories().keySet())
             {
