@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanQuery;
@@ -32,7 +32,7 @@ public class RepositoryIndexer
 
     private static final String [] luceneFields = new String [] { "g", "a", "v", "p", "c" };
 
-    private static final StandardAnalyzer luceneAnalyzer = new StandardAnalyzer(luceneVersion);
+    private static final WhitespaceAnalyzer luceneAnalyzer = new WhitespaceAnalyzer(luceneVersion);
 
     private Indexer indexer;
 
@@ -182,6 +182,7 @@ public class RepositoryIndexer
                                    indexingContext.getIndexDirectory().toString() });
 
         final FlatSearchResponse response = getIndexer().searchFlat(new FlatSearchRequest(query, indexingContext));
+
         logger.info("Hit count: {}", response.getReturnedHitsCount());
 
         final Set<ArtifactInfo> results = response.getResults();
@@ -226,7 +227,7 @@ public class RepositoryIndexer
             artifactInfo.setFieldValue(MAVEN.PACKAGING, artifact.getType());
         }
 
-        logger.info("adding artifact: {}; repo: {}; type: {}", new String[] { artifactInfo.getUinfo(),
+        logger.info("Adding artifact: {}; repo: {}; type: {}", new String[] { artifactInfo.getUinfo(),
                                                                               repository, artifact.getType() });
 
         getIndexer().addArtifactsToIndex(asList(new ArtifactContext(null,
