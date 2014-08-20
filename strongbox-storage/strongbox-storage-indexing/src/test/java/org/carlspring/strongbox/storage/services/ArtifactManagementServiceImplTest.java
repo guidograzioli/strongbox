@@ -3,6 +3,7 @@ package org.carlspring.strongbox.storage.services;
 import org.apache.maven.artifact.Artifact;
 import org.carlspring.maven.commons.util.ArtifactUtils;
 import org.carlspring.strongbox.artifact.generator.ArtifactGenerator;
+import org.carlspring.strongbox.client.ArtifactOperationException;
 import org.carlspring.strongbox.storage.indexing.RepositoryIndexManager;
 import org.carlspring.strongbox.storage.indexing.RepositoryIndexer;
 import org.carlspring.strongbox.storage.indexing.SearchRequest;
@@ -45,7 +46,8 @@ public class ArtifactManagementServiceImplTest
     public void init()
             throws NoSuchAlgorithmException,
                    XmlPullParserException,
-                   IOException
+                   IOException,
+                   ArtifactOperationException
     {
         //noinspection ResultOfMethodCallIgnored
         INDEX_DIR.mkdirs();
