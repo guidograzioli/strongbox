@@ -2,6 +2,7 @@ package org.carlspring.strongbox.artifact.generator;
 
 import org.carlspring.maven.commons.model.ModelWriter;
 import org.carlspring.maven.commons.util.ArtifactUtils;
+import org.carlspring.strongbox.client.ArtifactOperationException;
 import org.carlspring.strongbox.io.MultipleDigestInputStream;
 import org.carlspring.strongbox.io.RandomInputStream;
 import org.carlspring.strongbox.resource.ResourceCloser;
@@ -48,10 +49,58 @@ public class ArtifactGenerator
     public void generate(Artifact artifact)
             throws IOException,
                    XmlPullParserException,
-                   NoSuchAlgorithmException
+                   NoSuchAlgorithmException,
+                   ArtifactOperationException
     {
-        generatePom(artifact);
+        generate(artifact, true);
+    }
+
+    public void generate(Artifact artifact, boolean generatePom)
+            throws IOException,
+                   XmlPullParserException,
+                   NoSuchAlgorithmException,
+                   ArtifactOperationException
+    {
+        generate(artifact, null, generatePom);
+    }
+
+    public void generate(Artifact artifact, String[] classifiers)
+            throws NoSuchAlgorithmException,
+                   XmlPullParserException,
+                   IOException,
+                   ArtifactOperationException
+    {
+        generate(artifact, classifiers, true);
+    }
+
+    public void generate(Artifact artifact, String[] classifiers, boolean generatePom)
+            throws NoSuchAlgorithmException,
+                   XmlPullParserException,
+                   IOException,
+                   ArtifactOperationException
+    {
+        logger.info("Creating artifact " + artifact.toString() + "...");
+
+        if (generatePom)
+        {
+            generatePom(artifact);
+        }
+
         createArchive(artifact);
+
+        if (classifiers != null)
+        {
+            for (String classifier : classifiers)
+            {
+                // We're assuming the type of the classifier is the same as the one of the main artifact
+                Artifact artifactWithClassifier = ArtifactUtils.getArtifactFromGAVTC(artifact.getGroupId() + ":" +
+                                                                                     artifact.getArtifactId() + ":" +
+                                                                                     artifact.getVersion() + ":" +
+                                                                                     artifact.getType() + ":" +
+                                                                                     classifier);
+                generate(artifactWithClassifier, false);
+            }
+        }
     }
 
     protected void createArchive(Artifact artifact)
