@@ -12,6 +12,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 public class ProxyConfiguration
 {
 
+    public static final String SCHEME_HTTP = "http";
+
+    public static final String SCHEME_HTTPS = "https";
+
+    @XStreamAlias(value = "scheme")
+    private String scheme = SCHEME_HTTP;
+
     @XStreamAlias(value = "host")
     private String host;
 
@@ -36,6 +43,16 @@ public class ProxyConfiguration
 
     public ProxyConfiguration()
     {
+    }
+
+    public String getScheme()
+    {
+        return scheme;
+    }
+
+    public void setScheme(String scheme)
+    {
+        this.scheme = scheme;
     }
 
     public String getHost()

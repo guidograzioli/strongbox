@@ -3,7 +3,7 @@ package org.carlspring.strongbox.xml.parsers;
 import org.carlspring.strongbox.configuration.Configuration;
 import org.carlspring.strongbox.configuration.ProxyConfiguration;
 import org.carlspring.strongbox.configuration.StorageMapEntryConverter;
-import org.carlspring.strongbox.storage.repository.RemoteRepository;
+import org.carlspring.strongbox.configuration.RemoteRepository;
 import org.carlspring.strongbox.storage.repository.Repository;
 
 import java.util.Map;

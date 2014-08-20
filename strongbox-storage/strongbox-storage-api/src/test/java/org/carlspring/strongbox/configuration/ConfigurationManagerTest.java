@@ -91,6 +91,7 @@ public class ConfigurationManagerTest
         ProxyConfiguration proxyConfigurationRepository1 = new ProxyConfiguration();
         proxyConfigurationRepository1.setUsername("maven");
         proxyConfigurationRepository1.setPassword("password");
+        proxyConfigurationRepository1.setScheme(ProxyConfiguration.SCHEME_HTTPS);
         proxyConfigurationRepository1.setHost("192.168.100.5");
         proxyConfigurationRepository1.setPort(8080);
         proxyConfigurationRepository1.addNonProxyHost("192.168.100.10");

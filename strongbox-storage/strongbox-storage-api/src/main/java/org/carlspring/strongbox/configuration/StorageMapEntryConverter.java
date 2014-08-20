@@ -7,6 +7,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import org.carlspring.strongbox.storage.Storage;
 import org.carlspring.strongbox.storage.repository.Repository;
@@ -143,6 +144,51 @@ public class StorageMapEntryConverter
         writer.addAttribute("implementation", repository.getImplementation());
         writer.addAttribute("policy", repository.getPolicy());
         writer.addAttribute("type", repository.getType());
+
+        final RemoteRepository remoteRepository = repository.getRemoteRepository();
+        if (remoteRepository != null)
+        {
+            if (remoteRepository.getUrl() != null)
+            {
+                writer.startNode("url");
+                writer.setValue(remoteRepository.getUrl());
+                writer.endNode();
+            }
+
+            if (!StringUtils.isEmpty(remoteRepository.getUsername()))
+            {
+                writer.startNode("username");
+                writer.setValue(remoteRepository.getUsername());
+                writer.endNode();
+            }
+
+            if (!StringUtils.isEmpty(remoteRepository.getPassword()))
+            {
+                writer.startNode("password");
+                writer.setValue(remoteRepository.getPassword());
+                writer.endNode();
+            }
+
+            if (!StringUtils.isEmpty(remoteRepository.getChecksumPolicy()))
+            {
+                writer.startNode("checksum-policy");
+                writer.setValue(remoteRepository.getChecksumPolicy());
+                writer.endNode();
+            }
+
+            writer.startNode("download-remote-indexes");
+            writer.setValue(Boolean.toString(remoteRepository.isDownloadRemoteIndexes()));
+            writer.endNode();
+
+            writer.startNode("auto-blocking");
+            writer.setValue(Boolean.toString(remoteRepository.isAutoBlocking()));
+            writer.endNode();
+
+            writer.startNode("checksum-validation");
+            writer.setValue(Boolean.toString(remoteRepository.isChecksumValidation()));
+            writer.endNode();
+
+        }
 
         final ProxyConfiguration proxyConfiguration = repository.getProxyConfiguration();
         if (proxyConfiguration != null)

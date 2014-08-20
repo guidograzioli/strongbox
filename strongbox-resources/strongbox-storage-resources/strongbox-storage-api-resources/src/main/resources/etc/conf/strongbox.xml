@@ -18,6 +18,15 @@
 
                 <repository name="snapshots" basedir="/snapshots" policy="snapshot" implementation="file-system" type="hosted" secured="true" />
                 <repository name="snapshots-in-memory" basedir="/snapshots-in-memory" policy="snapshot" implementation="in-memory" type="hosted" secured="true" />
+
+                <repository name="proxied-releases" basedir="/proxied-releases" policy="release" implementation="proxy" type="hosted" secured="true">
+                    <remote-repository>
+                        <url>http://localhost:48080/storages/storage0/releases</url>
+                        <username>maven</username>
+                        <password>password</password>
+                    </remote-repository>
+                </repository>
+
             </repositories>
         </storage>
     </storages>

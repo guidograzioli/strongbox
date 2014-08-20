@@ -2,6 +2,7 @@ package org.carlspring.strongbox.storage.repository;
 
 import org.carlspring.maven.commons.util.ArtifactUtils;
 import org.carlspring.strongbox.configuration.ProxyConfiguration;
+import org.carlspring.strongbox.configuration.RemoteRepository;
 import org.carlspring.strongbox.storage.Storage;
 
 import java.io.File;
@@ -50,6 +51,9 @@ public class Repository
 
     @XStreamAlias("remote-repository")
     private RemoteRepository remoteRepository;
+
+    @XStreamAlias("url")
+    private String url;
 
     @XStreamOmitField
     private Storage storage;
@@ -192,6 +196,16 @@ public class Repository
     public void setRemoteRepository(RemoteRepository remoteRepository)
     {
         this.remoteRepository = remoteRepository;
+    }
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+    public void setUrl(String url)
+    {
+        this.url = url;
     }
 
     public Storage getStorage()

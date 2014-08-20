@@ -1,8 +1,10 @@
-package org.carlspring.strongbox.storage.repository;
+package org.carlspring.strongbox.configuration;
 
-import org.carlspring.strongbox.security.jaas.Credentials;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * @author mtodorov
@@ -10,6 +12,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("remote-repository")
 public class RemoteRepository
 {
+
+    /**
+     * A representation of the url as a URL object.
+     * This should only really be used internally.
+     */
+    @XStreamOmitField
+    private URL internalURL;
 
     @XStreamAlias(value = "url")
     private String url;
@@ -23,8 +32,11 @@ public class RemoteRepository
     @XStreamAlias(value = "checksum-validation")
     private boolean checksumValidation;
 
-    @XStreamAlias(value = "credentials")
-    private Credentials credentials;
+    @XStreamAlias(value = "username")
+    private String username;
+
+    @XStreamAlias(value = "password")
+    private String password;
 
     @XStreamAlias(value = "checksum-policy")
     private String checksumPolicy;
@@ -40,8 +52,10 @@ public class RemoteRepository
     }
 
     public void setUrl(String url)
+            throws MalformedURLException
     {
         this.url = url;
+        this.internalURL = new URL(url);
     }
 
     public boolean isDownloadRemoteIndexes()
@@ -74,14 +88,24 @@ public class RemoteRepository
         this.checksumValidation = checksumValidation;
     }
 
-    public Credentials getCredentials()
+    public String getUsername()
     {
-        return credentials;
+        return username;
     }
 
-    public void setCredentials(Credentials credentials)
+    public void setUsername(String username)
     {
-        this.credentials = credentials;
+        this.username = username;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
     }
 
     public String getChecksumPolicy()
@@ -92,6 +116,34 @@ public class RemoteRepository
     public void setChecksumPolicy(String checksumPolicy)
     {
         this.checksumPolicy = checksumPolicy;
+    }
+
+    public URL getInternalURL()
+    {
+        return internalURL;
+    }
+
+    public void setInternalURL(URL internalURL)
+    {
+        this.internalURL = internalURL;
+    }
+
+    public String getScheme()
+            throws MalformedURLException
+    {
+        return new URL(url).getProtocol();
+    }
+
+    public String getHost()
+            throws MalformedURLException
+    {
+        return new URL(url).getHost();
+    }
+
+    public int getPort()
+            throws MalformedURLException
+    {
+        return new URL(url).getPort();
     }
 
 }
