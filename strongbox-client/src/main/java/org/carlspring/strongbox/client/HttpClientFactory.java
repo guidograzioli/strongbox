@@ -16,20 +16,13 @@ public class HttpClientFactory
 {
 
 
-    public static CloseableHttpClient createCloseableHttpClient(String storageId,
-                                                                String repositoryId)
+    public static CloseableHttpClient createCloseableHttpClient(String username,
+                                                                String password,
+                                                                String proxyHost,
+                                                                int proxyPort,
+                                                                String proxyScheme)
     {
-        // TODO: Get the host from the configuration
-        String hostname = null;
-
-        // TODO: Get the username from the configuration
-        String username = null;
-
-        // TODO: Get the password from the configuration
-        String password = null;
-
-        HttpHost target = new HttpHost(hostname, 80, "http");
-        HttpHost proxy = new HttpHost("127.0.0.1", 8180, "http");
+        HttpHost proxy = new HttpHost(proxyHost, proxyPort, proxyScheme);
 
         UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(username, password);
 
@@ -44,6 +37,5 @@ public class HttpClientFactory
 
         return clientBuilder.build();
     }
-
 
 }
