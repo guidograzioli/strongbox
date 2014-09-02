@@ -1,6 +1,7 @@
 package org.carlspring.strongbox.client;
 
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class HttpClientFactoryForRepositoriesTest
     private HttpClientFactoryForRepositories httpClientFactoryForRepositories;
 
 
+    @Ignore
     @Test
     public void testCreateCloseableHttpClient()
     {

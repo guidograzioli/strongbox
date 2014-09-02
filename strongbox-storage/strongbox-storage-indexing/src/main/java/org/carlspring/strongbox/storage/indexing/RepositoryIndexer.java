@@ -217,24 +217,31 @@ public class RepositoryIndexer
                                    final Artifact artifact)
             throws IOException
     {
+        String extension = artifactFile.getAbsolutePath();
+        extension = extension.substring(extension.lastIndexOf(".") + 1, extension.length());
+
         ArtifactInfo artifactInfo = new ArtifactInfo(repository,
                                                      artifact.getGroupId(),
                                                      artifact.getArtifactId(),
                                                      artifact.getVersion(),
-                                                     artifact.getClassifier());
+                                                     artifact.getClassifier(),
+                                                     extension);
+
         if (artifact.getType() != null)
         {
             artifactInfo.setFieldValue(MAVEN.PACKAGING, artifact.getType());
         }
 
         logger.info("Adding artifact: {}; repo: {}; type: {}", new String[] { artifactInfo.getUinfo(),
-                                                                              repository, artifact.getType() });
+                                                                              repository,
+                                                                              artifact.getType() });
 
         getIndexer().addArtifactsToIndex(asList(new ArtifactContext(null,
                                                                     artifactFile,
                                                                     null,
                                                                     artifactInfo,
-                                                                    artifactInfo.calculateGav())), indexingContext);
+                                                                    artifactInfo.calculateGav())),
+                                         indexingContext);
     }
 
     private class ReindexArtifactScanningListener

@@ -6,7 +6,6 @@ import org.carlspring.strongbox.client.ArtifactOperationException;
 import org.carlspring.strongbox.storage.indexing.RepositoryIndexManager;
 import org.carlspring.strongbox.storage.indexing.RepositoryIndexer;
 import org.carlspring.strongbox.storage.indexing.SearchRequest;
-import org.carlspring.strongbox.storage.indexing.SearchResults;
 
 import java.io.File;
 import java.io.IOException;
